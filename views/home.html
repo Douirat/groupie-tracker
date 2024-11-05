@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist List</title>
+</head>
+<body>
+    {{range .}}
+        <h2>{{.Name}}</h2>
+        <img src="{{.Image}}" alt="Artist image">
+        <h3>Members:</h3>
+        <ol>
+            {{range .Members}}
+                <li>{{.}}</li>
+            {{end}}
+        </ol>
+        <strong>Creation Date: {{.CreationDate}}</strong><br>
+        <a href="group/{{.Id}}">Details</a>
+        <hr>
+    {{end}}
+</body>
+</html>

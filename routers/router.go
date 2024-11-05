@@ -6,5 +6,6 @@ import(
 )
 
 func GroupieRouter(router *mux.Router) {
-	router.HandleFunc("/groups", controllers.GitAllGroups).Methods("GET")
+	router.HandleFunc("/", controllers.GitAllGroups).Methods("GET")
+	router.HandleFunc("/group/{{id}}", controllers.GetGroupById).Methods("GET")
 }
