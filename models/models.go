@@ -13,13 +13,13 @@ type Relation struct {
 
 // Create a date structure:
 type Date struct {
-Id int
-Dates []string `json:"dates"`
+	Id    int
+	Dates []string `json:"dates"`
 }
 
 // Create a location structure:
 type Location struct {
-	Id int
+	Id        int
 	Locations []string `json:"locations"`
 }
 
@@ -30,22 +30,21 @@ type Artist struct {
 	Name            string   `json:"name"`
 	Members         []string `json:"members"`
 	CreationDate    uint     `json:"creationDate"`
-	Locations []string
-	Dates []string
+	Locations       []string
+	Dates           []string
 	DatesLocations  map[string][]string
-	LocationsURL    string   `json:"locations"`
-	ConcertDatesURL string   `json:"concertDates"`
-	Relations       string   `json:"relations"`
+	LocationsURL    string `json:"locations"`
+	ConcertDatesURL string `json:"concertDates"`
+	Relations       string `json:"relations"`
 }
 
 // Declare a global variable to hold necessary data about the artists:
-var artists []Artist
 
 // Get all the data from the Artist API
 func GetAllArtists() ([]Artist, error) {
 	var data []byte
 	var err error
-
+	var artists []Artist
 
 	var response *http.Response
 	url := "https://groupietrackers.herokuapp.com/api/artists"
@@ -67,6 +66,10 @@ func GetAllArtists() ([]Artist, error) {
 }
 
 // Get an artist based on id:
-func GetArtisDetails() {
-
+func GetArtisDetails(id int) *Artist {
+	artists, err := GetAllArtists()
+	if err != nil {
+		return nil
+	}
+	return &artists[id]
 }

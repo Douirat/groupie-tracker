@@ -13,7 +13,7 @@ import (
 
 func main() {
 	var err error
-	controllers.Tmpl, err = template.ParseGlob("../views/*.html")
+	controllers.Tmpl, err = template.ParseGlob("views/*.html")
 	if err != nil {
 		log.Fatal(err)
 	}
