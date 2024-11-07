@@ -25,11 +25,9 @@ func GitAllGroups(wr http.ResponseWriter, rq *http.Request) {
 		http.Error(wr, "Error retrieving data from the server!", http.StatusInternalServerError)
 		return
 	}
-
 	// Execute the template with the artists data directly
 	if err := Tmpl.ExecuteTemplate(wr, "home.html", artists); err != nil {
 		fmt.Println("Template execution error:", err)
-
 		http.Redirect(wr, rq, "/error?status=404", http.StatusMovedPermanently)
 	}
 }
@@ -46,13 +44,14 @@ func GetGroupById(wr http.ResponseWriter, rq *http.Request) {
 	artist := models.GetArtisDetails(artistId-1)
 	if err = Tmpl.ExecuteTemplate(wr, "details.html", artist); err != nil {
 		fmt.Println("Template execution error:", err)
-		http.Redirect(wr, rq, "/error?status=404", http.StatusMovedPermanently)
 	}
 }
 
 // Controller to handle errors:
 func ErrorHandler(wr http.ResponseWriter, rq *http.Request) {
 	s := rq.URL.Query().Get("status")
-	a := Errony{Status: s,ErrorType: "test"}
-	Tmpl.ExecuteTemplate(wr, "error.html", a)
+	err := Errony{Status: s,ErrorType: "test"}
+	if e := Tmpl.ExecuteTemplate(wr, "error.html", err); e != nil {
+		http.Redirect(wr, rq, "/error?status=404", http.StatusPermanentRedirect)
+	}
 }

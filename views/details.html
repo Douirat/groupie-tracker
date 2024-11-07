@@ -15,5 +15,10 @@
             {{end}}
         </ol>
         <strong>Creation Date: {{.CreationDate}}</strong>
+        <ul>
+            {{range .Dates.Dates}}
+                <li>{{.}}</li>
+            {{end}}
+        </ul>
 </body>
 </html>
