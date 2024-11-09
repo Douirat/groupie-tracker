@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist List</title>
 </head>
+
 <body>
-        <h2>{{.Name}}</h2>
-        <img src="{{.Image}}" alt="Artist image">
-        <h3>Members:</h3>
-        <ol>
-            {{range .Members}}
-                <li>{{.}}</li>
-            {{end}}
-        </ol>
-        <strong>Creation Date: {{.CreationDate}}</strong>
-        <ul>
-            {{range .Dates.Dates}}
-                <li>{{.}}</li>
-            {{end}}
-        </ul>
+    <h2>{{.Name}}</h2>
+    <img src="{{.Image}}" alt="Artist image">
+    <h3>Members:</h3>
+    <ol>
+        {{range .Members}}
+        <li>{{.}}</li>
+        {{end}}
+    </ol>
+    <strong>Creation Date: {{.CreationDate}}</strong>
+    <h3>Dates:</h3>
+    <ul>
+        {{range .Dates.Dates}}
+        <li>{{.}}</li>
+        {{end}}
+    </ul>
+    <h3>Locations:</h3>
+    <ul>
+        {{range .Locations.Locations}}
+        <li>{{.}}</li>
+        {{end}}
+    </ul>
+    <h1>Relations:</h1>
+    <ul>
+        {{range $key, $value := .DatesLocations.DatesLocations}}
+        <li><strong>{{$key}}:</strong> {{$value}}</li>
+        {{end}}
+    </ul>
 </body>
+
 </html>

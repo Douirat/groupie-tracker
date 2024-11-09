@@ -42,7 +42,12 @@ func GetGroupById(wr http.ResponseWriter, rq *http.Request) {
 		return
 	}
 	artist := models.GetArtisDetails(artistId-1)
+	if artist == nil {
+		http.Error(wr, "Error retrieving data from the server!", http.StatusNotFound)
+		return
+	}
 	if err = Tmpl.ExecuteTemplate(wr, "details.html", artist); err != nil {
+		
 		fmt.Println("Template execution error:", err)
 	}
 }

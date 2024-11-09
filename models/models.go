@@ -32,14 +32,19 @@ type Artist struct {
 	Name            string   `json:"name"`
 	Members         []string `json:"members"`
 	CreationDate    uint     `json:"creationDate"`
-	Locations       []string
+	Locations       *Location
 	Dates           *Date
-	DatesLocations  map[string][]string
+	DatesLocations  *Relation
 	LocationsURL    string `json:"locations"`
 	ConcertDatesURL string `json:"concertDates"`
-	Relations       string `json:"relations"`
+	RelationsURL    string `json:"relations"`
 }
 
+// Create a global variable to the artists:
+var (
+	artists []Artist
+	err     error
+)
 
 // A general dynamic function to retrieve data from the API:
 func FetchData(url string, inst any) error {
@@ -61,9 +66,8 @@ func FetchData(url string, inst any) error {
 // Get all the data from the Artist API
 func GetAllArtists() ([]Artist, error) {
 	var err error
-	var artists []Artist
 	url := "https://groupietrackers.herokuapp.com/api/artists"
-	err = FetchData(url, &artists)	
+	err = FetchData(url, &artists)
 	if err != nil {
 		return nil, err
 	}
@@ -71,25 +75,28 @@ func GetAllArtists() ([]Artist, error) {
 }
 
 // Get UserDates:
-func GetDates(url string) {
-	fmt.Println(url)
-	date := new(Date)
-	err := FetchData(url, date)
+func GetDates(artist *Artist) {
+	fmt.Println(artist.ConcertDatesURL)
+	artist.Dates = new(Date)
+	err := FetchData(artist.ConcertDatesURL, artist.Dates)
 	if err != nil {
 		return
 	}
-	fmt.Println(date.Dates)
+	fmt.Println(artist.Dates.Dates)
 }
 
 
 // Get an artist based on id:
 func GetArtisDetails(id int) *Artist {
-	artists, err := GetAllArtists()
+	artists, err = GetAllArtists()
+	artists[id].Dates = new(Date)
+	err = FetchData(artists[id].ConcertDatesURL, artists[id].Dates)
+	artists[id].Locations = new(Location)
+	err = FetchData(artists[id].LocationsURL, artists[id].Locations)
+	artists[id].DatesLocations = new(Relation)
+	err = FetchData(artists[id].RelationsURL, artists[id].DatesLocations)
 	if err != nil {
 		return nil
 	}
-	GetDates(artists[id].ConcertDatesURL)
 	return &artists[id]
 }
-
-// 
